@@ -1,6 +1,6 @@
 #include <Windows.h>
 #include <d2d1.h>
-#define SAFE_RELEASE(P) if(P){P->Release() ; P = NULL ;}
+#include "init.hpp"
 
 #pragma comment(lib, "d2d1.lib")
 using namespace std;
@@ -9,32 +9,14 @@ ID2D1Factory*			g_pD2DFactory = NULL;
 ID2D1HwndRenderTarget*	g_pRenderTarget = NULL;	
 ID2D1SolidColorBrush*	g_pBlackBrush = NULL;
 
-void InitD2D(HWND window);
-/*
-void TestDraw()
-{
-	g_pRenderTarget->BeginDraw();
-
-	g_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
-	g_pRenderTarget->DrawRectangle(
-		D2D1::RectF(100.f, 100.f, 500.f, 500.f),
-		g_pBlackBrush);
-
-	HRESULT hr = g_pRenderTarget->EndDraw();
-	if (FAILED(hr))
-	{
-		MessageBox(NULL, "Draw failed!", "Error", 0);
-		return;
-	}
-}
-*/
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
 	{
 	case WM_PAINT:
-		//TestDraw();
-		//Update the window
+		g_pRenderTarget->BeginDraw();
+		g_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+		g_pRenderTarget->EndDraw();
 		return 0;
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
@@ -43,7 +25,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 }
 HWND InitWindow(int Width, int Height)
 {
-	constexpr auto windowName = TEXT("Test Window");
+	constexpr auto windowName = TEXT("data structure to graph");
 	WNDCLASS wcls;
 	wcls.cbClsExtra = 0;
 	wcls.cbWndExtra = 0;
@@ -52,14 +34,14 @@ HWND InitWindow(int Width, int Height)
 	wcls.hIcon = LoadIcon(NULL, IDI_APPLICATION);
 	wcls.hInstance = NULL;
 	wcls.lpfnWndProc = WndProc;
-	wcls.lpszClassName = "Test Window";
+	wcls.lpszClassName = "graphics Window";
 	wcls.lpszMenuName = NULL;
 	wcls.style = CS_HREDRAW | CS_VREDRAW;
 
 	RegisterClass(&wcls);
 	
 	auto window = CreateWindow(
-		windowName,
+		"graphics Window",
 		windowName,
 		WS_OVERLAPPEDWINDOW & ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX),
 		CW_USEDEFAULT,

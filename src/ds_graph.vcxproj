@@ -19,13 +19,15 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="icon.cpp" />
+    <ClCompile Include="..\tests\test.cpp" />
+    <ClCompile Include="elements.cpp" />
     <ClCompile Include="init.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="icon.hpp" />
+    <ClInclude Include="elements.hpp" />
     <ClInclude Include="init.hpp" />
+    <ClInclude Include="Text.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

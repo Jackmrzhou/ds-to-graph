@@ -13,30 +13,36 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="源文件\test">
-      <UniqueIdentifier>{648ff311-196f-4c99-a1c4-1b573f60f3da}</UniqueIdentifier>
-    </Filter>
     <Filter Include="源文件\src">
       <UniqueIdentifier>{f361f9d6-3eb5-4a53-9454-7792c58ef604}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\tests">
+      <UniqueIdentifier>{b04bb59a-d87d-450c-9f46-cc759927bb5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="test.cpp">
-      <Filter>源文件\test</Filter>
-    </ClCompile>
-    <ClCompile Include="icon.cpp">
-      <Filter>源文件\src</Filter>
-    </ClCompile>
     <ClCompile Include="init.cpp">
       <Filter>源文件\src</Filter>
     </ClCompile>
+    <ClCompile Include="..\tests\test.cpp">
+      <Filter>源文件\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
+    <ClCompile Include="elements.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="icon.hpp">
-      <Filter>源文件\src</Filter>
-    </ClInclude>
     <ClInclude Include="init.hpp">
-      <Filter>源文件\src</Filter>
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Text.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="elements.hpp">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
