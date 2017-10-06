@@ -1,6 +1,8 @@
 #include <Windows.h>
 #include <d2d1.h>
 #include "init.hpp"
+#include <dwrite.h>
+#include <iostream>
 
 #pragma comment(lib, "d2d1.lib")
 using namespace std;
@@ -8,6 +10,9 @@ using namespace std;
 ID2D1Factory*			g_pD2DFactory = NULL;	
 ID2D1HwndRenderTarget*	g_pRenderTarget = NULL;	
 ID2D1SolidColorBrush*	g_pBlackBrush = NULL;
+IDWriteFactory* g_pWriteFactory = NULL;
+
+void InitDwrite();
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -58,6 +63,9 @@ HWND InitWindow(int Width, int Height)
 		MessageBox(NULL, TEXT("Create Window Failed!"), TEXT("ERROR"), 0);
 	}
 	InitD2D(window);
+	//Initialize Direct2D
+	InitDwrite();
+	//Initialize Direct write
 	ShowWindow(window, 1);
 	UpdateWindow(window);
 	return window;
@@ -110,7 +118,23 @@ void InitD2D(HWND window)
 
 void Cleanup()
 {
+
 	SAFE_RELEASE(g_pRenderTarget);
 	SAFE_RELEASE(g_pBlackBrush);
 	SAFE_RELEASE(g_pD2DFactory);
+	SAFE_RELEASE(g_pWriteFactory);
+}
+
+void InitDwrite()
+{
+	auto hr = DWriteCreateFactory(
+		DWRITE_FACTORY_TYPE_SHARED,
+		__uuidof(IDWriteFactory),
+		reinterpret_cast<IUnknown**>(&g_pWriteFactory)
+	);
+	if (FAILED(hr))
+	{
+		MessageBox(NULL, "Create Write Factory failed!", "Error", 0);
+		return;
+	}
 }

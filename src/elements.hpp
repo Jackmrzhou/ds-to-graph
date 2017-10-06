@@ -1,10 +1,12 @@
 #pragma once
+#define RED D2D1::ColorF::Red
+#define BLACK D2D1::ColorF::Black
+#define WHITE D2D1::ColorF::White
 #ifndef _ICON_H
 #define _ICON_H
 #include <d2d1.h>
 #include <array>
-constexpr auto RED = D2D1::ColorF::Red;
-constexpr auto BLACK = D2D1::ColorF::Black;
+#include "Text.hpp"
 class Icon
 {
 public:
@@ -18,6 +20,8 @@ class Circle
 public:
 	Circle(float xx, float yy, float r);
 	Circle(float xx, float yy, float r, const D2D1::ColorF &c);
+	Circle(float xx, float yy, float r, const D2D1::ColorF &c, const WCHAR *s);
+	Circle(float xx, float yy, float r, const D2D1::ColorF &c, const Text *t);
 	~Circle();
 	HRESULT Draw() const;
 	std::array<float, 3> info() const;
@@ -28,6 +32,9 @@ private:
 	D2D1::ColorF color;
 	ID2D1SolidColorBrush *pBrush = nullptr;
 	ID2D1PathGeometry *pPathGeo = nullptr;
+	Text *pText;
+
+private:
 	HRESULT CreatCircleGeo(ID2D1PathGeometry *&pPathGeo);
 };
 

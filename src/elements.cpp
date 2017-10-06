@@ -1,7 +1,10 @@
 #include "elements.hpp"
 #include "init.hpp"
 #include <cmath>
+#include <utility>
+#if DEBUG
 #include <iostream>
+#endif
 
 Circle::Circle(float xx, float yy, float r) 
 	:x(xx), y(yy), radius(r),color(RED)
@@ -17,9 +20,27 @@ Circle::Circle(float xx, float yy, float r, const D2D1::ColorF & c)
 	CreatCircleGeo(pPathGeo);
 }
 
+Circle::Circle(float xx, float yy, float r, const D2D1::ColorF & c, const WCHAR * s)
+	:x(xx), y(yy), radius(r), color(c)
+{
+	g_pRenderTarget->CreateSolidColorBrush(color, &pBrush);
+	CreatCircleGeo(pPathGeo);
+	pText = new Text(s);
+}
+
+Circle::Circle(float xx, float yy, float r, const D2D1::ColorF & c, const Text * t)
+	:x(xx), y(yy), radius(r), color(c)
+{
+	g_pRenderTarget->CreateSolidColorBrush(color, &pBrush);
+	CreatCircleGeo(pPathGeo);
+	pText = new Text(t);
+}
+
 Circle::~Circle() {
 	SAFE_RELEASE(pPathGeo);
 	SAFE_RELEASE(pBrush);
+	if (pText != nullptr)
+		delete pText;
 }
 
 HRESULT Circle::CreatCircleGeo(ID2D1PathGeometry * &pPathGeo)
@@ -67,6 +88,14 @@ HRESULT Circle::Draw() const
 	g_pRenderTarget->DrawGeometry(pPathGeo, g_pBlackBrush);
 	g_pRenderTarget->FillGeometry(pPathGeo, pBrush);
 	auto hr = g_pRenderTarget->EndDraw();
+	if (SUCCEEDED(hr))
+		if (pText != nullptr)
+			hr = pText->Draw(D2D1::RectF(
+				x - radius / std::sqrt(2.f),
+				y + radius / std::sqrt(2.f),
+				x + radius / std::sqrt(2.f),
+				y - radius / std::sqrt(2.f)
+			));
 	return hr;
 }
 
@@ -152,7 +181,7 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 HRESULT Arrow::Draw() const
 {
 	g_pRenderTarget->BeginDraw();
-	g_pRenderTarget->DrawGeometry(pPathGeo, g_pBlackBrush);
+	g_pRenderTarget->DrawGeometry(pPathGeo, g_pBlackBrush, 2.f);
 	auto hr = g_pRenderTarget->EndDraw();
 	return hr;
 }
