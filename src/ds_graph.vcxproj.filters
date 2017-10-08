@@ -19,6 +19,9 @@
     <Filter Include="源文件\tests">
       <UniqueIdentifier>{b04bb59a-d87d-450c-9f46-cc759927bb5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\src\ds">
+      <UniqueIdentifier>{6946ff72-c67d-421b-86da-8ceaadd36529}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="init.cpp">

@@ -38,10 +38,14 @@ int main()
 		400.f, 100.f, 500.f, 200.f
 	));
 	*/
+	//auto testCell = new Cell(100, 100, D2D1::Point2F(300, 400), 0, RED,L"Test");
+	//testCell->Draw();
+
 	system("pause");
 	
 	delete testCircle1;
 	delete testCircle2;
+	//delete testCell;
 	Cleanup();
 	return 0;
 }

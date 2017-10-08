@@ -7,7 +7,7 @@
 #include <d2d1.h>
 #include <array>
 #include "Text.hpp"
-class Icon
+class Container
 {
 public:
 
@@ -32,7 +32,7 @@ private:
 	D2D1::ColorF color;
 	ID2D1SolidColorBrush *pBrush = nullptr;
 	ID2D1PathGeometry *pPathGeo = nullptr;
-	Text *pText;
+	Text *pText = nullptr;
 
 private:
 	HRESULT CreatCircleGeo(ID2D1PathGeometry *&pPathGeo);
@@ -47,5 +47,20 @@ public:
 	HRESULT Draw() const;
 private:
 	ID2D1PathGeometry *pPathGeo;
+};
+
+class Cell
+{
+public:
+	Cell(float h, float w, const D2D1_POINT_2F &p, size_t i, const D2D1::ColorF &c,
+		const WCHAR * s);
+	~Cell();
+	HRESULT Draw() const;
+private:
+	float Height, Width;
+	D2D1_POINT_2F StartPoint;
+	size_t index;
+	Text *pText = nullptr;
+	ID2D1SolidColorBrush *pBrush = nullptr;
 };
 #endif // !_ICON_H

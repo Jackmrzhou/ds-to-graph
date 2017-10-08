@@ -25,9 +25,9 @@ Text::~Text()
 	SAFE_RELEASE(pBrush);
 }
 
-HRESULT Text::Draw(const D2D1_RECT_F &layoutRect) const
+void Text::Draw(const D2D1_RECT_F &layoutRect) const
 {
-	g_pRenderTarget->BeginDraw();
+	//g_pRenderTarget->BeginDraw();
 	g_pRenderTarget->DrawText(
 		text,        // The string to render.
 		text_length,    // The string's length.
@@ -35,8 +35,9 @@ HRESULT Text::Draw(const D2D1_RECT_F &layoutRect) const
 		layoutRect,       // The region of the window where the text will be rendered.
 		pBrush     // The brush used to draw the text.
 	);
-	auto hr = g_pRenderTarget->EndDraw();
-	return hr;
+	//auto hr = g_pRenderTarget->EndDraw();
+	//return hr;
+	//BeginDraw and EndDraw are better called by user 
 }
 
 void Text::InitDText(const D2D1::ColorF & c)

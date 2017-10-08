@@ -87,15 +87,14 @@ HRESULT Circle::Draw() const
 	g_pRenderTarget->BeginDraw();
 	g_pRenderTarget->DrawGeometry(pPathGeo, g_pBlackBrush);
 	g_pRenderTarget->FillGeometry(pPathGeo, pBrush);
+	if (pText != nullptr)
+		pText->Draw(D2D1::RectF(
+			x - radius / std::sqrt(2.f),
+			y + radius / std::sqrt(2.f),
+			x + radius / std::sqrt(2.f),
+			y - radius / std::sqrt(2.f)
+		));
 	auto hr = g_pRenderTarget->EndDraw();
-	if (SUCCEEDED(hr))
-		if (pText != nullptr)
-			hr = pText->Draw(D2D1::RectF(
-				x - radius / std::sqrt(2.f),
-				y + radius / std::sqrt(2.f),
-				x + radius / std::sqrt(2.f),
-				y - radius / std::sqrt(2.f)
-			));
 	return hr;
 }
 
@@ -183,5 +182,37 @@ HRESULT Arrow::Draw() const
 	g_pRenderTarget->BeginDraw();
 	g_pRenderTarget->DrawGeometry(pPathGeo, g_pBlackBrush, 2.f);
 	auto hr = g_pRenderTarget->EndDraw();
+	return hr;
+}
+
+Cell::Cell(float h, float w, const D2D1_POINT_2F & p, size_t i, const D2D1::ColorF &c,
+	const WCHAR *s)
+	:Height(h),Width(w),StartPoint(p), index(i)
+{
+	g_pRenderTarget->CreateSolidColorBrush(c, &pBrush);
+	pText = new Text(s);
+}
+
+Cell::~Cell()
+{
+	SAFE_RELEASE(pBrush);
+	if (pText != nullptr)
+		delete pText;
+}
+
+HRESULT Cell::Draw() const
+{
+	g_pRenderTarget->BeginDraw();
+	auto Rect = D2D1::RectF(
+		StartPoint.x,
+		StartPoint.y,
+		StartPoint.x + Width,
+		StartPoint.y - Height
+	);
+	g_pRenderTarget->DrawRectangle(Rect,g_pBlackBrush);
+	g_pRenderTarget->FillRectangle(Rect, pBrush);
+	pText->Draw(Rect);
+	auto hr = g_pRenderTarget->EndDraw();
+	
 	return hr;
 }
