@@ -20,11 +20,14 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\tests\test.cpp" />
+    <ClCompile Include="ArrayType.cpp" />
+    <ClCompile Include="convert.cpp" />
     <ClCompile Include="elements.cpp" />
     <ClCompile Include="init.cpp" />
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="convert.hpp" />
     <ClInclude Include="elements.hpp" />
     <ClInclude Include="init.hpp" />
     <ClInclude Include="Text.hpp" />

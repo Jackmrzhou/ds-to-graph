@@ -2,9 +2,11 @@
 #include "init.hpp"
 #include <cmath>
 #include <utility>
-#if DEBUG
+#include "convert.hpp"
+//#if DEBUG
+#include <string>
 #include <iostream>
-#endif
+//#endif
 
 Circle::Circle(float xx, float yy, float r) 
 	:x(xx), y(yy), radius(r),color(RED)
@@ -82,9 +84,9 @@ HRESULT Circle::CreatCircleGeo(ID2D1PathGeometry * &pPathGeo)
 	return hr;
 }
 
-HRESULT Circle::Draw() const
+void Circle::Draw() const
 {
-	g_pRenderTarget->BeginDraw();
+	//g_pRenderTarget->BeginDraw();
 	g_pRenderTarget->DrawGeometry(pPathGeo, g_pBlackBrush);
 	g_pRenderTarget->FillGeometry(pPathGeo, pBrush);
 	if (pText != nullptr)
@@ -94,8 +96,8 @@ HRESULT Circle::Draw() const
 			x + radius / std::sqrt(2.f),
 			y - radius / std::sqrt(2.f)
 		));
-	auto hr = g_pRenderTarget->EndDraw();
-	return hr;
+	//auto hr = g_pRenderTarget->EndDraw();
+	//return hr;
 }
 
 std::array<float, 3> Circle::info() const
@@ -177,20 +179,21 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 	return hr;
 }
 
-HRESULT Arrow::Draw() const
+void Arrow::Draw() const
 {
-	g_pRenderTarget->BeginDraw();
+	//g_pRenderTarget->BeginDraw();
 	g_pRenderTarget->DrawGeometry(pPathGeo, g_pBlackBrush, 2.f);
-	auto hr = g_pRenderTarget->EndDraw();
-	return hr;
+	//auto hr = g_pRenderTarget->EndDraw();
+	//return hr;
 }
 
 Cell::Cell(float h, float w, const D2D1_POINT_2F & p, size_t i, const D2D1::ColorF &c,
 	const WCHAR *s)
-	:Height(h),Width(w),StartPoint(p), index(i)
+	:Height(h),Width(w),StartPoint(p),pIndex(to_WCHAR(i))
 {
 	g_pRenderTarget->CreateSolidColorBrush(c, &pBrush);
 	pText = new Text(s);
+	pIndexWStr = new Text(pIndex.get());
 }
 
 Cell::~Cell()
@@ -198,11 +201,13 @@ Cell::~Cell()
 	SAFE_RELEASE(pBrush);
 	if (pText != nullptr)
 		delete pText;
+	if (pIndexWStr != nullptr)
+		delete pIndexWStr;
 }
 
-HRESULT Cell::Draw() const
+void Cell::Draw() const
 {
-	g_pRenderTarget->BeginDraw();
+	//g_pRenderTarget->BeginDraw();
 	auto Rect = D2D1::RectF(
 		StartPoint.x,
 		StartPoint.y,
@@ -212,7 +217,11 @@ HRESULT Cell::Draw() const
 	g_pRenderTarget->DrawRectangle(Rect,g_pBlackBrush);
 	g_pRenderTarget->FillRectangle(Rect, pBrush);
 	pText->Draw(Rect);
-	auto hr = g_pRenderTarget->EndDraw();
+	Rect.top += Height;
+	Rect.bottom += Height;
+	pIndexWStr->Draw(Rect);
+
+	//auto hr = g_pRenderTarget->EndDraw();
 	
-	return hr;
+	//return hr;
 }

@@ -43,7 +43,7 @@ void Text::Draw(const D2D1_RECT_F &layoutRect) const
 void Text::InitDText(const D2D1::ColorF & c)
 {
 	g_pWriteFactory->CreateTextFormat(
-		L"Gabriola",                // Font family name.
+		L"Verdana",                // Font family name.
 		NULL,                       // Font collection (NULL sets it to use the system font collection).
 		DWRITE_FONT_WEIGHT_REGULAR,
 		DWRITE_FONT_STYLE_NORMAL,

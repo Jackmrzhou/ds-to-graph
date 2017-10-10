@@ -36,6 +36,12 @@
     <ClCompile Include="elements.cpp">
       <Filter>源文件\src</Filter>
     </ClCompile>
+    <ClCompile Include="ArrayType.cpp">
+      <Filter>源文件\src\ds</Filter>
+    </ClCompile>
+    <ClCompile Include="convert.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="init.hpp">
@@ -45,6 +51,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="elements.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="convert.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

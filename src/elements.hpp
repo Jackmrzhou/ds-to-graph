@@ -7,6 +7,7 @@
 #include <d2d1.h>
 #include <array>
 #include "Text.hpp"
+#include<memory>
 class Container
 {
 public:
@@ -23,7 +24,7 @@ public:
 	Circle(float xx, float yy, float r, const D2D1::ColorF &c, const WCHAR *s);
 	Circle(float xx, float yy, float r, const D2D1::ColorF &c, const Text *t);
 	~Circle();
-	HRESULT Draw() const;
+	void Draw() const;
 	std::array<float, 3> info() const;
 
 private:
@@ -44,7 +45,7 @@ public:
 	Arrow();
 	~Arrow();
 	HRESULT CreateArrow(const Circle & c1, const Circle &c2);
-	HRESULT Draw() const;
+	void Draw() const;
 private:
 	ID2D1PathGeometry *pPathGeo;
 };
@@ -55,11 +56,12 @@ public:
 	Cell(float h, float w, const D2D1_POINT_2F &p, size_t i, const D2D1::ColorF &c,
 		const WCHAR * s);
 	~Cell();
-	HRESULT Draw() const;
+	void Draw() const;
 private:
 	float Height, Width;
 	D2D1_POINT_2F StartPoint;
-	size_t index;
+	std::unique_ptr<WCHAR> pIndex;
+	Text *pIndexWStr= nullptr;
 	Text *pText = nullptr;
 	ID2D1SolidColorBrush *pBrush = nullptr;
 };
