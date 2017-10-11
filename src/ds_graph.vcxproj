@@ -19,7 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\tests\test.cpp" />
+    <ClCompile Include="..\tests\DS_tests.cpp" />
+    <ClCompile Include="..\tests\main.cpp" />
+    <ClCompile Include="..\tests\TestElements.cpp" />
     <ClCompile Include="ArrayType.cpp" />
     <ClCompile Include="convert.cpp" />
     <ClCompile Include="elements.cpp" />

@@ -48,7 +48,7 @@ HWND InitWindow(int Width, int Height)
 	auto window = CreateWindow(
 		"graphics Window",
 		windowName,
-		WS_OVERLAPPEDWINDOW & ~(WS_MINIMIZEBOX | WS_MAXIMIZEBOX),
+		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
 		Width,
@@ -87,7 +87,6 @@ void InitD2D(HWND window)
 		// Obtain the size of the drawing area
 		RECT rc;
 		GetClientRect(window, &rc);
-
 		// Create a Direct2D render target
 		hr = g_pD2DFactory->CreateHwndRenderTarget(
 			D2D1::RenderTargetProperties(),
