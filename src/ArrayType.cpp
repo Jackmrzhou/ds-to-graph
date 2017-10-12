@@ -34,9 +34,6 @@ void ArrayType<T, size>::Draw() const
 			NowPoint.x = startX; 
 			NowPoint.y += CellHeight * 2;
 		}
-		if (NowPoint.y > g_pRenderTarget->GetSize().height)
-			;
-			//TODO:ERROR handle
 		auto nowCell = new Cell(
 			CellHeight,
 			CellWidth,

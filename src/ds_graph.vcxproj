@@ -25,14 +25,18 @@
     <ClCompile Include="ArrayType.cpp" />
     <ClCompile Include="convert.cpp" />
     <ClCompile Include="elements.cpp" />
+    <ClCompile Include="ErrorHandle.cpp" />
     <ClCompile Include="init.cpp" />
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="convert.hpp" />
     <ClInclude Include="elements.hpp" />
+    <ClInclude Include="ErrorHandle.hpp" />
     <ClInclude Include="init.hpp" />
     <ClInclude Include="Text.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\tests\testHead.hpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>

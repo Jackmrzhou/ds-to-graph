@@ -2,7 +2,7 @@
 #include "init.hpp"
 #include <cmath>
 #include <utility>
-#include "convert.hpp"
+#include "convert.cpp"
 //#if DEBUG
 #include <string>
 #include <iostream>

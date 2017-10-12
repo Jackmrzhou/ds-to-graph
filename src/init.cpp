@@ -3,7 +3,7 @@
 #include "init.hpp"
 #include <dwrite.h>
 #include <iostream>
-
+#include "../tests/testHead.hpp"
 #pragma comment(lib, "d2d1.lib")
 using namespace std;
 
@@ -13,6 +13,7 @@ ID2D1SolidColorBrush*	g_pBlackBrush = NULL;
 IDWriteFactory* g_pWriteFactory = NULL;
 
 void InitDwrite();
+constexpr float UP_DOWN_DIS = 50.f;
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -21,14 +22,40 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_PAINT:
 		g_pRenderTarget->BeginDraw();
 		g_pRenderTarget->Clear(D2D1::ColorF(D2D1::ColorF::White));
+		ValidateRect(hwnd, NULL);
 		g_pRenderTarget->EndDraw();
+		return 0;
+	case WM_KEYDOWN:
+	{
+		switch (wParam)
+		{
+		case VK_ESCAPE:
+			SendMessage(hwnd, WM_CLOSE, 0, 0);
+			break;
+		case VK_DOWN:
+			//g_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(0, UP_DOWN_DIS));
+			//testArray();
+			break;
+		case VK_UP:
+			//g_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(0, -UP_DOWN_DIS));
+			//testArray();
+			break;
+		default:
+			break;
+		}
+		return 0;
+	}
+	break;
+	case WM_DESTROY:
+		Cleanup();
+		PostQuitMessage(0);
 		return 0;
 	default:
 		return DefWindowProc(hwnd, msg, wParam, lParam);
 	}
 	
 }
-HWND InitWindow(int Width, int Height)
+HWND InitWindow(int Width, int Height, HINSTANCE hInstance)
 {
 	constexpr auto windowName = TEXT("data structure to graph");
 	WNDCLASS wcls;
@@ -55,7 +82,7 @@ HWND InitWindow(int Width, int Height)
 		Height,
 		NULL,//no console window
 		NULL,
-		NULL,
+		hInstance,
 		NULL
 	);
 	if (window == NULL)
@@ -66,7 +93,7 @@ HWND InitWindow(int Width, int Height)
 	//Initialize Direct2D
 	InitDwrite();
 	//Initialize Direct write
-	ShowWindow(window, 1);
+	ShowWindow(window, SW_NORMAL);
 	UpdateWindow(window);
 	return window;
 }

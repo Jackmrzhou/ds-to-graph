@@ -1,7 +1,6 @@
 #include <iostream>
 #include "../src/init.hpp"
-#include "DS_tests.cpp"
-#include "TestElements.cpp"
+#include "testHead.hpp"
 using namespace std;
 
 void TestDraw()
@@ -21,12 +20,21 @@ void TestDraw()
 	}
 }
 
-int main()
+int WINAPI WinMain(
+	HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	PSTR szCmdLine,
+	int iCmdShow)
 {
-	auto window = InitWindow(800, 600);
+	auto window = InitWindow(800, 600, hInstance);
 	//TestDraw();
-	TestElements();
-	system("pause");
-	Cleanup();
-	return 0;
+	//TestElements();
+	MSG msg;
+	ZeroMemory(&msg, sizeof(msg));
+	testArray();
+	while (GetMessage(&msg, NULL, 0, 0)) {
+		TranslateMessage(&msg);  
+		DispatchMessage(&msg);
+	}
+	return msg.wParam;
 }

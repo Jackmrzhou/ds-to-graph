@@ -22,22 +22,16 @@
     <Filter Include="源文件\src\ds">
       <UniqueIdentifier>{6946ff72-c67d-421b-86da-8ceaadd36529}</UniqueIdentifier>
     </Filter>
+    <Filter Include="源文件\src\Graphics">
+      <UniqueIdentifier>{fff2ee44-6ea5-4091-9ea5-68ae563c6e08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="源文件\src\basic">
+      <UniqueIdentifier>{43118892-4847-4bb9-9981-2db789be378f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="init.cpp">
-      <Filter>源文件\src</Filter>
-    </ClCompile>
-    <ClCompile Include="Text.cpp">
-      <Filter>源文件\src</Filter>
-    </ClCompile>
-    <ClCompile Include="elements.cpp">
-      <Filter>源文件\src</Filter>
-    </ClCompile>
     <ClCompile Include="ArrayType.cpp">
       <Filter>源文件\src\ds</Filter>
-    </ClCompile>
-    <ClCompile Include="convert.cpp">
-      <Filter>源文件\src</Filter>
     </ClCompile>
     <ClCompile Include="..\tests\main.cpp">
       <Filter>源文件\tests</Filter>
@@ -47,6 +41,21 @@
     </ClCompile>
     <ClCompile Include="..\tests\DS_tests.cpp">
       <Filter>源文件\tests</Filter>
+    </ClCompile>
+    <ClCompile Include="elements.cpp">
+      <Filter>源文件\src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="init.cpp">
+      <Filter>源文件\src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Text.cpp">
+      <Filter>源文件\src\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="convert.cpp">
+      <Filter>源文件\src\basic</Filter>
+    </ClCompile>
+    <ClCompile Include="ErrorHandle.cpp">
+      <Filter>源文件\src\basic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -59,8 +68,13 @@
     <ClInclude Include="elements.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="convert.hpp">
+    <ClInclude Include="ErrorHandle.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\tests\testHead.hpp">
+      <Filter>源文件\tests</Filter>
+    </None>
   </ItemGroup>
 </Project>

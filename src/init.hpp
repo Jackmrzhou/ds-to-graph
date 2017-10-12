@@ -8,7 +8,7 @@
 #include <dwrite.h>
 
 
-HWND InitWindow(int Width, int Height);
+HWND InitWindow(int Width, int Height, HINSTANCE hInstance);
 void InitD2D(HWND window);
 void Cleanup();
 extern ID2D1Factory*			g_pD2DFactory;

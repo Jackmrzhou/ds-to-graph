@@ -1,20 +1,21 @@
-#include <string>
+#pragma once
+#ifndef CONVERT_H_
+#define CONVERT_H_
 #include <cwchar>
 #include <memory>
+#include <sstream>
 using namespace std;
 using WCHAR = wchar_t;
-unique_ptr<WCHAR> to_WCHAR(size_t num)
+template<typename T>
+unique_ptr<WCHAR> to_WCHAR(T value)
+//deal with int, float, double and other types
 {
-	size_t count = 0;
-	size_t tmp = num;
-	while (num != 0)
-	{
-		count++;
-		num /= 10;
-	}
-	if (tmp == 0)
-		count = 1;
-	unique_ptr<WCHAR> pWCHAR(new WCHAR[count + 1]);
-	swprintf(pWCHAR.get(), count + 1, L"%u", tmp);
+	wstringstream ws;
+	ws << value;
+	//let wstringstream help us deal with all cases.
+	auto s = ws.str();
+	unique_ptr<WCHAR> pWCHAR(new WCHAR[s.size() + 1]);
+	wcscpy_s(pWCHAR.get(), s.size() + 1, s.c_str());
 	return pWCHAR;
 }
+#endif // !CONVERT_H_
