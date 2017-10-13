@@ -1,5 +1,6 @@
 #include "../src/elements.hpp"
-#include "../src/ArrayType.cpp"
+#include "../src/ArrayType.hpp"
+/*
 void testArray()
 {
 	WCHAR *as[100];
@@ -11,3 +12,4 @@ void testArray()
 	testarray.Draw();
 	g_pRenderTarget->EndDraw();
 }
+*/

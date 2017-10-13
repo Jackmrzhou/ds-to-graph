@@ -1,41 +1,35 @@
 #include "elements.hpp"
+#include "App.hpp"
 #include "init.hpp"
 #include <cmath>
 #include <utility>
 #include "convert.cpp"
+#include "Text.hpp"
 //#if DEBUG
 #include <string>
 #include <iostream>
 //#endif
 
-Circle::Circle(float xx, float yy, float r) 
-	:x(xx), y(yy), radius(r),color(RED)
+Circle::Circle(VisualDSApp &a, float xx, float yy, float r)
+	:app(a), x(xx), y(yy), radius(r),color(RED)
 {
-	g_pRenderTarget->CreateSolidColorBrush(color,&pBrush);
+	app.m_pRenderTarget->CreateSolidColorBrush(color,&pBrush);
 	CreatCircleGeo(pPathGeo);
 }
 
-Circle::Circle(float xx, float yy, float r, const D2D1::ColorF & c)
-	:x(xx), y(yy), radius(r), color(c)
+Circle::Circle(VisualDSApp &a, float xx, float yy, float r, const D2D1::ColorF & c)
+	:app(a), x(xx), y(yy), radius(r), color(c)
 {
-	g_pRenderTarget->CreateSolidColorBrush(color, &pBrush);
+	app.m_pRenderTarget->CreateSolidColorBrush(color, &pBrush);
 	CreatCircleGeo(pPathGeo);
 }
 
-Circle::Circle(float xx, float yy, float r, const D2D1::ColorF & c, const WCHAR * s)
-	:x(xx), y(yy), radius(r), color(c)
+Circle::Circle(VisualDSApp &a, float xx, float yy, float r, const D2D1::ColorF & c, const WCHAR * s)
+	:app(a), x(xx), y(yy), radius(r), color(c)
 {
-	g_pRenderTarget->CreateSolidColorBrush(color, &pBrush);
+	app.m_pRenderTarget->CreateSolidColorBrush(color, &pBrush);
 	CreatCircleGeo(pPathGeo);
-	pText = new Text(s);
-}
-
-Circle::Circle(float xx, float yy, float r, const D2D1::ColorF & c, const Text * t)
-	:x(xx), y(yy), radius(r), color(c)
-{
-	g_pRenderTarget->CreateSolidColorBrush(color, &pBrush);
-	CreatCircleGeo(pPathGeo);
-	pText = new Text(t);
+	pText = app.NewText(s);
 }
 
 Circle::~Circle() {
@@ -48,7 +42,7 @@ Circle::~Circle() {
 HRESULT Circle::CreatCircleGeo(ID2D1PathGeometry * &pPathGeo)
 {
 	ID2D1GeometrySink *pSink = nullptr;
-	auto hr = g_pD2DFactory->CreatePathGeometry(&pPathGeo);
+	auto hr = app.m_pD2DFactory->CreatePathGeometry(&pPathGeo);
 	if (SUCCEEDED(hr))
 	{
 		hr = pPathGeo->Open(&pSink);
@@ -87,8 +81,8 @@ HRESULT Circle::CreatCircleGeo(ID2D1PathGeometry * &pPathGeo)
 void Circle::Draw() const
 {
 	//g_pRenderTarget->BeginDraw();
-	g_pRenderTarget->DrawGeometry(pPathGeo, g_pBlackBrush);
-	g_pRenderTarget->FillGeometry(pPathGeo, pBrush);
+	app.m_pRenderTarget->DrawGeometry(pPathGeo, app.m_pBlackBrush);
+	app.m_pRenderTarget->FillGeometry(pPathGeo, pBrush);
 	if (pText != nullptr)
 		pText->Draw(D2D1::RectF(
 			x - radius / std::sqrt(2.f),
@@ -105,7 +99,8 @@ std::array<float, 3> Circle::info() const
 	return std::array<float, 3>{x, y, radius};
 }
 
-Arrow::Arrow():pPathGeo(nullptr)
+Arrow::Arrow(VisualDSApp &a)
+	:app(a), pPathGeo(nullptr)
 {
 }
 
@@ -119,7 +114,7 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 	//create arrow from c1 to c2
 	//make sure c1 and c2 are not crossed
 	ID2D1GeometrySink *pSink = nullptr;
-	auto hr = g_pD2DFactory->CreatePathGeometry(&pPathGeo);
+	auto hr = app.m_pD2DFactory->CreatePathGeometry(&pPathGeo);
 	if (SUCCEEDED(hr))
 	{
 		hr = pPathGeo->Open(&pSink);
@@ -182,18 +177,24 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 void Arrow::Draw() const
 {
 	//g_pRenderTarget->BeginDraw();
-	g_pRenderTarget->DrawGeometry(pPathGeo, g_pBlackBrush, 2.f);
+	app.m_pRenderTarget->DrawGeometry(pPathGeo, app.m_pBlackBrush, 2.f);
 	//auto hr = g_pRenderTarget->EndDraw();
 	//return hr;
 }
 
-Cell::Cell(float h, float w, const D2D1_POINT_2F & p, size_t i, const D2D1::ColorF &c,
-	const WCHAR *s)
-	:Height(h),Width(w),StartPoint(p),pIndex(to_WCHAR(i))
+Cell::Cell(VisualDSApp &a, float h, float w, const D2D1_POINT_2F & p, size_t i,
+	const D2D1::ColorF &c,	const WCHAR *s)
+	:app(a), Height(h),Width(w),StartPoint(p),pIndex(to_WCHAR(i))
 {
-	g_pRenderTarget->CreateSolidColorBrush(c, &pBrush);
-	pText = new Text(s);
-	pIndexWStr = new Text(pIndex.get());
+	app.m_pRenderTarget->CreateSolidColorBrush(c, &pBrush);
+	pText = app.NewText(s);
+	pIndexWStr = app.NewText(pIndex.get());
+}
+
+Cell::Cell(const Cell & c)
+	:app(c.app),Height(c.Height), Width(c.Width), StartPoint(c.StartPoint),
+	pIndex(static_cast<Cell>(c).pIndex.release()),pText(c.pText), pIndexWStr(c.pIndexWStr)
+{
 }
 
 Cell::~Cell()
@@ -214,8 +215,8 @@ void Cell::Draw() const
 		StartPoint.x + Width,
 		StartPoint.y - Height
 	);
-	g_pRenderTarget->DrawRectangle(Rect,g_pBlackBrush);
-	g_pRenderTarget->FillRectangle(Rect, pBrush);
+	app.m_pRenderTarget->DrawRectangle(Rect,app.m_pBlackBrush);
+	app.m_pRenderTarget->FillRectangle(Rect, pBrush);
 	pText->Draw(Rect);
 	Rect.top += Height;
 	Rect.bottom += Height;

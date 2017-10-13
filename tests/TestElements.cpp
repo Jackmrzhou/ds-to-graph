@@ -1,5 +1,6 @@
 #include "../src/elements.hpp"
 #include "../src/init.hpp"
+/*
 void TestElements()
 {
 	auto testCircle1 = new Circle(100, 100, 40, BLACK,new Text(L"H", WHITE));
@@ -26,3 +27,4 @@ void TestElements()
 	delete testCircle2;
 	delete testCell;
 }
+*/

@@ -30,9 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ArrayType.cpp">
-      <Filter>源文件\src\ds</Filter>
-    </ClCompile>
     <ClCompile Include="..\tests\main.cpp">
       <Filter>源文件\tests</Filter>
     </ClCompile>
@@ -57,6 +54,15 @@
     <ClCompile Include="ErrorHandle.cpp">
       <Filter>源文件\src\basic</Filter>
     </ClCompile>
+    <ClCompile Include="App.cpp">
+      <Filter>源文件\src</Filter>
+    </ClCompile>
+    <ClCompile Include="Base.cpp">
+      <Filter>源文件\src\ds</Filter>
+    </ClCompile>
+    <ClCompile Include="ArrayType.hpp">
+      <Filter>源文件\src\ds</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="init.hpp">
@@ -69,6 +75,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="ErrorHandle.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="App.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Base.hpp">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="defines.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
