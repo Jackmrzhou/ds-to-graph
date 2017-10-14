@@ -13,10 +13,12 @@ int WINAPI WinMain(
 {
 	VisualDSApp app(600, 800);
 	
-	WCHAR *ws[100];
+	WCHAR *ws[10];
 	for (auto &it : ws)
 		it = new WCHAR[2]{ L"H" };
-	auto p =app.NewArray<WCHAR*, 100>(ws);
+	auto p =app.NewStack<WCHAR*, 10>(ws);
+	app.OnRender();
+	(*p).pop();
 	app.OnRender();
 	app.RunMessageLoop();
 	return 0;

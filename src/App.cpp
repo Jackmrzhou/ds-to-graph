@@ -134,14 +134,14 @@ LRESULT CALLBACK VisualDSApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 
 void VisualDSApp::UpTranslation()
 {
-	Coor_Origin.y -= TranslationDist;
-	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(0.f, Coor_Origin.y));
+	Coor_Origin.y += TranslationDist;
+	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(Coor_Origin.x, Coor_Origin.y));
 	OnRender();
 }
 
 void VisualDSApp::DownTranslation()
 {
-	Coor_Origin.y += TranslationDist;
-	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(0.f, Coor_Origin.y));
+	Coor_Origin.y -= TranslationDist;
+	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(Coor_Origin.x, Coor_Origin.y));
 	OnRender();
 }

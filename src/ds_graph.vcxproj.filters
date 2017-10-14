@@ -86,6 +86,9 @@
     <ClInclude Include="defines.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="StackType.hpp">
+      <Filter>源文件\src\ds</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\tests\testHead.hpp">

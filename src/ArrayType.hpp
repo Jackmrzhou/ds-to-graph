@@ -15,6 +15,7 @@ class ArrayType:public Base_DS
 public:
 	ArrayType(VisualDSApp &a,const T *h);
 	virtual void Draw() const;
+	void SetColor(size_t index, const D2D1::ColorF &c);
 private:
 	VisualDSApp &app;
 	const T* pArrayHead;
@@ -39,6 +40,13 @@ void ArrayType<T, size>::Draw() const
 	for (auto &it : Cells)
 		it.get()->Draw();
 }
+
+template<typename T, size_t size>
+inline void ArrayType<T, size>::SetColor(size_t index, const D2D1::ColorF &c)
+{
+	(*Cells[index]).SetColor(index, c);
+}
+
 template<typename T, size_t size>
 inline void ArrayType<T, size>::constructArray()
 {
@@ -58,6 +66,7 @@ inline void ArrayType<T, size>::constructArray()
 			index,
 			*(pArrayHead + index),
 			RED);
+		//default set to red color
 		Cells[index] = std::move(unique_ptr<Cell>(nowCell));
 		NowPoint.x += CellWidth;
 	}

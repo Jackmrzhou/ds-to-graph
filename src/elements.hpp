@@ -58,6 +58,7 @@ public:
 	Cell(const Cell&c);
 	~Cell();
 	void Draw() const;
+	void SetColor(size_t index, const D2D1::ColorF & c);
 private:
 	VisualDSApp &app;
 	float Height, Width;

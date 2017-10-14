@@ -18,6 +18,7 @@ template<typename T, size_t size>
 class ArrayType;
 */
 #include "ArrayType.hpp"
+#include "StackType.hpp"
 
 class VisualDSApp
 {
@@ -45,6 +46,13 @@ public:
 		auto a = new ArrayType<_T, _size>(*this, pHead);
 		ObjList.push_back(a);
 		return unique_ptr<ArrayType<_T, _size>>(a);
+	}
+
+	template<typename _T, size_t _size>
+	unique_ptr<StackType<_T, _size>> NewStack(_T* pHead) {
+		auto s = new StackType<_T, _size>(*this, NewArray<_T, _size>(pHead));
+		ObjList.push_back(s);
+		return unique_ptr<StackType<_T, _size>>(s);
 	}
 
 	void OnRender();

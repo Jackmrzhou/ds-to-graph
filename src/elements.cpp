@@ -226,3 +226,9 @@ void Cell::Draw() const
 	
 	//return hr;
 }
+
+void Cell::SetColor(size_t index, const D2D1::ColorF &c)
+{
+	SAFE_RELEASE(pBrush);
+	app.m_pRenderTarget->CreateSolidColorBrush(c, &pBrush);
+}

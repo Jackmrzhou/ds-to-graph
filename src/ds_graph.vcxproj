@@ -38,6 +38,7 @@
     <ClInclude Include="elements.hpp" />
     <ClInclude Include="ErrorHandle.hpp" />
     <ClInclude Include="init.hpp" />
+    <ClInclude Include="StackType.hpp" />
     <ClInclude Include="Text.hpp" />
   </ItemGroup>
   <ItemGroup>
