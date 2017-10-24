@@ -116,7 +116,8 @@ inline void ListType<N<T>>::constructList(T *value, N<T>** Next, N<T>** Prev)
 {
 	set_offset(value, Next, Prev);
 	D2D1_POINT_2F NowPoint = D2D1::Point2F(startX, startY);
-	Circle * prev = nullptr;
+	Circle * pr = nullptr;
+	auto pp = Head;
 	auto p = Head;
 	do {
 		//TODO: Check Boundary
@@ -129,10 +130,16 @@ inline void ListType<N<T>>::constructList(T *value, N<T>** Next, N<T>** Prev)
 		);
 		if (nodes.size() != 0)
 		{
-			prev = nodes.back().get();
+			pr = nodes.back().get();
 			auto r = app.NewArrow();
-			r->CreateArrow(prev, NowCircle);
+			r->CreateArrow(pr, NowCircle);
 			arrows.push_back(std::move(unique_ptr<Arrow>(r)));
+			if (pp == prev(p)) {
+				auto rr = app.NewArrow();
+				rr->CreateArrow(NowCircle, pr);
+				arrows.push_back(std::move(unique_ptr<Arrow>(rr)));
+			}
+			pp = p;
 		}
 		nodes.push_back(std::move(unique_ptr<Circle>(NowCircle)));
 		NowPoint.x += Node_Dis;

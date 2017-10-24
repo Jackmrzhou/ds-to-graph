@@ -169,9 +169,9 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 
 void Arrow::Draw() const
 {
-	//g_pRenderTarget->BeginDraw();
+	//app.m_pRenderTarget->BeginDraw();
 	app.m_pRenderTarget->DrawGeometry(pPathGeo, app.m_pBlackBrush, 2.f);
-	//auto hr = g_pRenderTarget->EndDraw();
+	//auto hr = app.m_pRenderTarget->EndDraw();
 	//return hr;
 }
 
