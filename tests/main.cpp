@@ -4,7 +4,7 @@
 #include "../src/App.hpp"
 #include "../src/Base.hpp"
 using namespace std;
-
+#include "DS_tests.cpp"
 int WINAPI WinMain(
 	HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
@@ -12,13 +12,20 @@ int WINAPI WinMain(
 	int iCmdShow)
 {
 	VisualDSApp app(600, 800);
-	
-	WCHAR *ws[10];
-	for (auto &it : ws)
-		it = new WCHAR[2]{ L"H" };
-	auto p =app.NewStack<WCHAR*, 10>(ws);
+	/*
+	auto s = new Stack<int, 10>;
+	auto pS = app.NewStack<Stack<int, 10>, int, 10>(s->data);
+	pS->push(5);
 	app.OnRender();
-	(*p).pop();
+	Sleep(2000);
+	pS->push(6);
+	*/
+	auto head = new Node<int>(12345);
+	head->next = head;
+	head->prev = head;
+	BuildTest(*head);
+	auto pL = app.NewList(head);
+	pL->constructList(&head->data, &head->next, &head->prev);
 	app.OnRender();
 	app.RunMessageLoop();
 	return 0;

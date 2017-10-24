@@ -16,6 +16,8 @@ public:
 	ArrayType(VisualDSApp &a,const T *h);
 	virtual void Draw() const;
 	void SetColor(size_t index, const D2D1::ColorF &c);
+	template<typename _T>
+	void SetValue(size_t index, _T value);
 private:
 	VisualDSApp &app;
 	const T* pArrayHead;
@@ -44,7 +46,15 @@ void ArrayType<T, size>::Draw() const
 template<typename T, size_t size>
 inline void ArrayType<T, size>::SetColor(size_t index, const D2D1::ColorF &c)
 {
-	(*Cells[index]).SetColor(index, c);
+	(*Cells[index]).SetColor(c);
+}
+
+
+template<typename T, size_t size>
+template<typename _T>
+inline void ArrayType<T, size>::SetValue(size_t index, _T value)
+{
+	(*Cells[index]).SetValue(value);
 }
 
 template<typename T, size_t size>

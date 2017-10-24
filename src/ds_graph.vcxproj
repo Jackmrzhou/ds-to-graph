@@ -27,8 +27,8 @@
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="convert.cpp" />
     <ClCompile Include="elements.cpp" />
-    <ClCompile Include="ErrorHandle.cpp" />
     <ClCompile Include="init.cpp" />
+    <ClCompile Include="ListType.hpp" />
     <ClCompile Include="Text.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -36,7 +36,6 @@
     <ClInclude Include="Base.hpp" />
     <ClInclude Include="defines.hpp" />
     <ClInclude Include="elements.hpp" />
-    <ClInclude Include="ErrorHandle.hpp" />
     <ClInclude Include="init.hpp" />
     <ClInclude Include="StackType.hpp" />
     <ClInclude Include="Text.hpp" />

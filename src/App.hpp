@@ -19,6 +19,7 @@ class ArrayType;
 */
 #include "ArrayType.hpp"
 #include "StackType.hpp"
+#include "ListType.hpp"
 
 class VisualDSApp
 {
@@ -31,15 +32,22 @@ public:
 	friend class Cell;
 	friend class Text;
 
-	Circle CreateCircle(float xx, float yy, float r,
-		const WCHAR *s = nullptr, const D2D1::ColorF &c = WHITE);
-	Arrow CreateArrow();
+	template<typename T>
+	Circle* NewCircle(float xx, float yy, float r,
+		T value, const D2D1::ColorF &c = WHITE){
+		return new Circle(*this, xx, yy, r, c, value);
+	}
+	Arrow *NewArrow();
 	Cell CreateCell(float h, float w, const D2D1_POINT_2F &p, size_t i,
 		const WCHAR *s = nullptr, const D2D1::ColorF &c = WHITE);
 	Text CreateText(const WCHAR * s, const D2D1::ColorF &c = BLACK);
 	Text* NewText(const WCHAR * s, const D2D1::ColorF &c = BLACK);
+	template<typename T>
 	Cell* NewCell(float h, float w, const D2D1_POINT_2F &p, size_t i,
-		const WCHAR *s = nullptr, const D2D1::ColorF &c = WHITE);
+		T value, const D2D1::ColorF &c = WHITE)
+	{
+		return new Cell(*this, h, w, p, i, c, value);
+	}
 
 	template<typename _T, size_t _size>
 	unique_ptr<ArrayType<_T, _size>> NewArray(_T* pHead) {
@@ -48,11 +56,18 @@ public:
 		return unique_ptr<ArrayType<_T, _size>>(a);
 	}
 
-	template<typename _T, size_t _size>
-	unique_ptr<StackType<_T, _size>> NewStack(_T* pHead) {
-		auto s = new StackType<_T, _size>(*this, NewArray<_T, _size>(pHead));
+	template<class _Tc,typename _T, size_t _size>
+	unique_ptr<StackType<_Tc, _T, _size>> NewStack(_T* pHead) {
+		auto s = new StackType<_Tc, _T, _size>(*this, NewArray<_T, _size>(pHead));
 		ObjList.push_back(s);
-		return unique_ptr<StackType<_T, _size>>(s);
+		return unique_ptr<StackType<_Tc, _T, _size>>(s);
+	}
+
+	template<typename T>
+	unique_ptr<ListType<T>> NewList(T *pHead) {
+		auto s = new ListType<T>(*this, pHead);
+		ObjList.push_back(s);
+		return unique_ptr<ListType<T>>(s);
 	}
 
 	void OnRender();

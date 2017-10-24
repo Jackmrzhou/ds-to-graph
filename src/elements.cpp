@@ -24,13 +24,6 @@ Circle::Circle(VisualDSApp &a, float xx, float yy, float r, const D2D1::ColorF &
 	CreatCircleGeo(pPathGeo);
 }
 
-Circle::Circle(VisualDSApp &a, float xx, float yy, float r, const D2D1::ColorF & c, const WCHAR * s)
-	:app(a), x(xx), y(yy), radius(r), color(c)
-{
-	app.m_pRenderTarget->CreateSolidColorBrush(color, &pBrush);
-	CreatCircleGeo(pPathGeo);
-	pText = app.NewText(s);
-}
 
 Circle::~Circle() {
 	SAFE_RELEASE(pPathGeo);
@@ -182,15 +175,6 @@ void Arrow::Draw() const
 	//return hr;
 }
 
-Cell::Cell(VisualDSApp &a, float h, float w, const D2D1_POINT_2F & p, size_t i,
-	const D2D1::ColorF &c,	const WCHAR *s)
-	:app(a), Height(h),Width(w),StartPoint(p),pIndex(to_WCHAR(i))
-{
-	app.m_pRenderTarget->CreateSolidColorBrush(c, &pBrush);
-	pText = app.NewText(s);
-	pIndexWStr = app.NewText(pIndex.get());
-}
-
 Cell::Cell(const Cell & c)
 	:app(c.app),Height(c.Height), Width(c.Width), StartPoint(c.StartPoint),
 	pIndex(static_cast<Cell>(c).pIndex.release()),pText(c.pText), pIndexWStr(c.pIndexWStr)
@@ -227,7 +211,7 @@ void Cell::Draw() const
 	//return hr;
 }
 
-void Cell::SetColor(size_t index, const D2D1::ColorF &c)
+void Cell::SetColor(const D2D1::ColorF &c)
 {
 	SAFE_RELEASE(pBrush);
 	app.m_pRenderTarget->CreateSolidColorBrush(c, &pBrush);

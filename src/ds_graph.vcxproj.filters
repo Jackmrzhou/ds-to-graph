@@ -51,9 +51,6 @@
     <ClCompile Include="convert.cpp">
       <Filter>源文件\src\basic</Filter>
     </ClCompile>
-    <ClCompile Include="ErrorHandle.cpp">
-      <Filter>源文件\src\basic</Filter>
-    </ClCompile>
     <ClCompile Include="App.cpp">
       <Filter>源文件\src</Filter>
     </ClCompile>
@@ -61,6 +58,9 @@
       <Filter>源文件\src\ds</Filter>
     </ClCompile>
     <ClCompile Include="ArrayType.hpp">
+      <Filter>源文件\src\ds</Filter>
+    </ClCompile>
+    <ClCompile Include="ListType.hpp">
       <Filter>源文件\src\ds</Filter>
     </ClCompile>
   </ItemGroup>
@@ -72,9 +72,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="elements.hpp">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="ErrorHandle.hpp">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="App.hpp">

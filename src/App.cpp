@@ -20,14 +20,9 @@ VisualDSApp::~VisualDSApp()
 	SAFE_RELEASE(m_pTextForm);
 }
 
-Circle VisualDSApp::CreateCircle(float xx, float yy, float r, const WCHAR * s,const D2D1::ColorF & c)
+Arrow* VisualDSApp::NewArrow()
 {
-	return Circle(*this, xx, yy, r, c, s);
-}
-
-Arrow VisualDSApp::CreateArrow()
-{
-	return Arrow(*this);
+	return new Arrow(*this);
 }
 
 Cell VisualDSApp::CreateCell(float h, float w, const D2D1_POINT_2F & p, 
@@ -44,11 +39,6 @@ Text VisualDSApp::CreateText(const WCHAR * s, const D2D1::ColorF & c)
 Text * VisualDSApp::NewText(const WCHAR * s, const D2D1::ColorF & c)
 {
 	return new Text(*this, s, c);
-}
-
-Cell * VisualDSApp::NewCell(float h, float w, const D2D1_POINT_2F & p, size_t i, const WCHAR * s, const D2D1::ColorF & c)
-{
-	return new Cell(*this, h, w, p, i,c, s);
 }
 
 void VisualDSApp::OnRender()
