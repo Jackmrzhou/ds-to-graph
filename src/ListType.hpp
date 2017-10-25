@@ -70,6 +70,7 @@ private:
 	VisualDSApp &app;
 	vector<unique_ptr<Circle>> nodes;
 	vector<unique_ptr<Arrow>> arrows;
+	void ChangeDirec(D2D1_POINT_2F &d);
 };
 
 template<typename T>
@@ -112,15 +113,45 @@ inline void ListType<N<T>>::Draw() const
 }
 
 template<template<typename> class N, typename T>
+inline void ListType<N<T>>::ChangeDirec(D2D1_POINT_2F & d)
+{
+	static int prev = 0;
+	if (d.x > 0)
+	{
+		d.y = d.x;
+		d.x = 0;
+	}
+	else if (d.x < 0)
+	{
+		d.y = -d.x;
+		d.x = 0;
+	}
+	else if (prev == 0)
+	{
+		d.x = -d.y;
+		d.y = 0;
+		prev = 1;
+	}
+	else
+	{
+		d.x = d.y;
+		d.y = 0;
+		prev = 0;
+	}
+}
+
+template<template<typename> class N, typename T>
 inline void ListType<N<T>>::constructList(T *value, N<T>** Next, N<T>** Prev)
 {
 	set_offset(value, Next, Prev);
 	D2D1_POINT_2F NowPoint = D2D1::Point2F(startX, startY);
+	D2D1_POINT_2F NowDirec = D2D1::Point2F(Node_Dis, 0);
 	Circle * pr = nullptr;
 	auto pp = Head;
 	auto p = Head;
+	int Rev = 1;
+	int flag = 1;
 	do {
-		//TODO: Check Boundary
 		auto NowCircle = app.NewCircle(
 			NowPoint.x,
 			NowPoint.y,
@@ -142,7 +173,20 @@ inline void ListType<N<T>>::constructList(T *value, N<T>** Next, N<T>** Prev)
 			pp = p;
 		}
 		nodes.push_back(std::move(unique_ptr<Circle>(NowCircle)));
-		NowPoint.x += Node_Dis;
+		if (flag == -1)
+		{
+			flag = -flag;
+			ChangeDirec(NowDirec);
+		}
+		else if (NowPoint.x + NowDirec.x + Node_Radius > app.GetSize().width ||
+			NowPoint.x + NowDirec.x - Node_Radius < 0)
+		{
+			flag = -flag;
+			ChangeDirec(NowDirec);
+		}
+		NowPoint.x += NowDirec.x;
+		NowPoint.y += NowDirec.y;
+		//check boundary
 		p = next(p);
 	} while (p != Head);
 }

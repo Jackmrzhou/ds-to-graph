@@ -63,10 +63,9 @@ void Insert(T head, T node)
 template<typename T>
 void BuildTest(T & head)
 {
-	auto tmp1 = new T(1234);
-	auto tmp2 = new T(123);
-	auto tmp3 = new T(12);
-	Insert(&head, tmp1);
-	Insert(&head, tmp2);
-	Insert(&head, tmp3);
+	for (int i = 0; i < 20; ++i)
+	{
+		auto tmp = new T(i);
+		Insert(&head, tmp);
+	}
 }
