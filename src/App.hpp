@@ -70,6 +70,13 @@ public:
 		return unique_ptr<ListType<T>>(s);
 	}
 
+	template<typename T>
+	unique_ptr<BinaryTreeType<T>> NewTree(T *pHead) {
+		auto s = new BinaryTreeType<T>(*this, pHead);
+		ObjList.push_back(s);
+		return unique_ptr<BinaryTreeType<T>>(s);
+	}
+
 	void OnRender();
 	void RunMessageLoop();
 	D2D1_SIZE_F GetSize();
@@ -98,5 +105,9 @@ private:
 
 	void UpTranslation();
 	void DownTranslation();
+	void LeftTranslation();
+	void RightTranslation();
+
+	void ThrowError();
 };
 #endif // !APP_H_

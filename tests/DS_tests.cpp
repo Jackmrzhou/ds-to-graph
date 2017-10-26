@@ -69,3 +69,23 @@ void BuildTest(T & head)
 		Insert(&head, tmp);
 	}
 }
+
+//////////////////////////////////////////
+////Binary Tree
+
+template<typename T>
+class TreeNode {
+public:
+	TreeNode(T k) :key(k),left(nullptr), right(nullptr) {}
+	T key;
+	TreeNode *left, *right;
+};
+
+template<typename T>
+void BuildTree(T* &r, int depth) {
+	if (depth <= 5) {
+		r = new T(123);
+		BuildTree(r->left, depth + 1);
+		BuildTree(r->right, depth + 1);
+	}
+}

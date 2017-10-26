@@ -4,6 +4,7 @@
 #include "elements.hpp"
 #include <memory>
 #include <vector>
+#include <cmath>
 using namespace std;
 
 constexpr float Node_Radius = 30.f;
@@ -53,24 +54,18 @@ public:
     ListType(VisualDSApp &a,N<T> *H):app(a), Head(H){
 		//constructList();
 	}
+	//ListType(N<T>* H) :Head(H) {}
 	void constructList(T *value, N<T>** Next, N<T>** Prev);
 	virtual void Draw() const;
-	/*
-    void walk()
-    {
-        N<T> *p =Head->prev->next;
-        do
-        {
-            cout << access_data(p) << endl;
-            p = next(p);
-        } while(p != Head);
-    }
-	*/
+	
 private:
+	const int MaxSize = 100;
 	VisualDSApp &app;
 	vector<unique_ptr<Circle>> nodes;
 	vector<unique_ptr<Arrow>> arrows;
 	void ChangeDirec(D2D1_POINT_2F &d);
+	void ThrowError();
+	int __size = 0;
 };
 
 template<typename T>
@@ -80,19 +75,17 @@ template<template<typename> class N, typename T>
 class BinaryTreeType<N<T>>:public ListType<N<T>>
 {
 public:
-    BinaryTreeType(N<T> *r):ListType<N<T>>(r), root(r) {}
+    BinaryTreeType(VisualDSApp &a, N<T> *r):app(a),ListType<N<T>>(a,r), root(r) {
+		startX = app.GetSize().width / 2;
+		startY = 50.f;
+	}
     void set_offset(T *value, N<T>** left, N<T>** right){
         ListType<N<T>>::set_offset(value, right, left); 
     }
-	/*
-    void test(){
-        cout << access_data(root) << endl;
-        cout << "LEFT:" << access_data(Left(root)) << endl;
-        cout << "RIGHT:" << access_data(Right(root)) << endl;
-    }
-	*/
+	void constructTree(T *value, N<T>** left, N<T>** right);
+	virtual void Draw() const;
+
 protected:
-    using ListType<N<T>>::access_data;
     N<T> *root;
     N<T> * Left(N<T> *node){
         return ListType<N<T>>::prev(node);
@@ -100,8 +93,21 @@ protected:
     N<T>* Right(N<T> *node){
         return ListType<N<T>>::next(node);
     }
+
+	void BuildTree(N<T>* T, D2D1_POINT_2F &p, int depth);
+	void ComputeHeight(N<T> *T, int depth);
+
+private:
+	using ListType<N<T>>::access_data;
+	const int MaxHeight = 6;
+	float startX, startY;
+	int Height = 1;
+	VisualDSApp &app;
+	vector<unique_ptr<Circle>> nodes;
+	vector<unique_ptr<Arrow>> arrows;
 };
 
+///////////////////////////////////////////////////
 
 template<template<typename> class N, typename T>
 inline void ListType<N<T>>::Draw() const
@@ -140,6 +146,13 @@ inline void ListType<N<T>>::ChangeDirec(D2D1_POINT_2F & d)
 	}
 }
 
+template<template <typename> class N, typename T>
+inline void ListType<N<T>>::ThrowError()
+{
+	//app.ThrowError();
+	//TODO
+}
+
 template<template<typename> class N, typename T>
 inline void ListType<N<T>>::constructList(T *value, N<T>** Next, N<T>** Prev)
 {
@@ -152,6 +165,12 @@ inline void ListType<N<T>>::constructList(T *value, N<T>** Next, N<T>** Prev)
 	int Rev = 1;
 	int flag = 1;
 	do {
+		__size++;
+		if (__size > MaxSize)
+		{
+			ThrowError();
+			return;
+		}
 		auto NowCircle = app.NewCircle(
 			NowPoint.x,
 			NowPoint.y,
@@ -172,6 +191,7 @@ inline void ListType<N<T>>::constructList(T *value, N<T>** Next, N<T>** Prev)
 			}
 			pp = p;
 		}
+		//Add arrow
 		nodes.push_back(std::move(unique_ptr<Circle>(NowCircle)));
 		if (flag == -1)
 		{
@@ -189,6 +209,93 @@ inline void ListType<N<T>>::constructList(T *value, N<T>** Next, N<T>** Prev)
 		//check boundary
 		p = next(p);
 	} while (p != Head);
+
+
+	auto NowCircle = app.NewCircle(
+		NowPoint.x,
+		NowPoint.y,
+		Node_Radius,
+		"HEAD",
+		RED
+	);
+	pr = nodes.back().get();
+	auto r = app.NewArrow();
+	r->CreateArrow(pr, NowCircle);
+	arrows.push_back(std::move(unique_ptr<Arrow>(r)));
+	if (pp == prev(p)) {
+		auto rr = app.NewArrow();
+		rr->CreateArrow(NowCircle, pr);
+		arrows.push_back(std::move(unique_ptr<Arrow>(rr)));
+	}
+	nodes.push_back(std::move(unique_ptr<Circle>(NowCircle)));
+	//Head again.
+}
+
+
+//////////////////////////////////////////////////////
+
+template<template<typename> class N, typename T>
+inline void BinaryTreeType<N<T>>::constructTree(T * value, N<T>** left, N<T>** right)
+{
+	set_offset(value, left, right);
+	D2D1_POINT_2F NowPoint = D2D1::Point2F(startX, startY);
+	ComputeHeight(root, 1);
+	BuildTree(root, NowPoint, 1);
+}
+
+template<template<typename> class N, typename T>
+inline void BinaryTreeType<N<T>>::Draw() const
+{
+	for (auto &it : nodes)
+		it.get()->Draw();
+	for (auto &it : arrows)
+		it.get()->Draw();
+}
+
+template<template<typename> class N, typename T>
+inline void BinaryTreeType<N<T>>::BuildTree(N<T>* T, D2D1_POINT_2F & p, int depth)
+{
+	if (T != nullptr && depth < MaxHeight)
+	{
+		auto NowCircle = app.NewCircle(
+			p.x,
+			p.y,
+			Node_Radius,
+			access_data(T),
+			RED
+		);
+		nodes.push_back(std::move(unique_ptr<Circle>(NowCircle)));
+	
+		D2D1_POINT_2F NextLeft = D2D1::Point2F(p.x - ((pow(2,Height - depth - 2)) * Node_Dis),
+			p.y + Node_Dis * sqrt(3.f));
+		D2D1_POINT_2F NextRight = D2D1::Point2F(p.x + ((pow(2, Height - depth - 2)) * Node_Dis),
+			p.y + Node_Dis * sqrt(3.f));
+		if (Left(T) != nullptr)
+		{
+			auto r = app.NewArrow();
+			r->CreateArrow(p, NextLeft, Node_Radius);
+			arrows.push_back(std::move(unique_ptr<Arrow>(r)));
+		}
+		if (Right(T) != nullptr)
+		{
+			auto r = app.NewArrow();
+			r->CreateArrow(p, NextRight, Node_Radius);
+			arrows.push_back(std::move(unique_ptr<Arrow>(r)));
+		}
+		BuildTree(Left(T), NextLeft, depth + 1);
+		BuildTree(Right(T), NextRight, depth + 1);
+	}
+}
+
+template<template<typename> class N, typename T>
+inline void BinaryTreeType<N<T>>::ComputeHeight(N<T>* T, int depth)
+{
+	if (T != nullptr)
+	{
+		Height = depth > Height ? depth : Height;
+		ComputeHeight(Left(T), depth + 1);
+		ComputeHeight(Right(T), depth + 1);
+	}
 }
 
 #endif // !_LISTTYPE_

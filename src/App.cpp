@@ -105,6 +105,12 @@ LRESULT CALLBACK VisualDSApp::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 				case VK_UP:
 					pApp->UpTranslation();
 					break;
+				case VK_LEFT:
+					pApp->LeftTranslation();
+					break;
+				case VK_RIGHT:
+					pApp->RightTranslation();
+					break;
 				default:
 					break;
 				}
@@ -134,4 +140,24 @@ void VisualDSApp::DownTranslation()
 	Coor_Origin.y -= TranslationDist;
 	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(Coor_Origin.x, Coor_Origin.y));
 	OnRender();
+}
+
+void VisualDSApp::LeftTranslation()
+{
+	Coor_Origin.x += TranslationDist;
+	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(Coor_Origin.x, Coor_Origin.y));
+	OnRender();
+}
+
+void VisualDSApp::RightTranslation()
+{
+	Coor_Origin.x -= TranslationDist;
+	m_pRenderTarget->SetTransform(D2D1::Matrix3x2F::Translation(Coor_Origin.x, Coor_Origin.y));
+	OnRender();
+}
+
+void VisualDSApp::ThrowError()
+{
+	//MessageBox(window, "Too Much Elements!", 0, 0);
+	//TODO
 }

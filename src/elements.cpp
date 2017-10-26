@@ -106,6 +106,25 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 {
 	//create arrow from c1 to c2
 	//make sure c1 and c2 are not crossed
+	return Construct(D2D1::Point2F(c1.info()[0], c1.info()[1]),
+		D2D1::Point2F(c2.info()[0], c2.info()[1]), c1.info()[2], c2.info()[2]);
+}
+
+HRESULT Arrow::CreateArrow(const D2D1_POINT_2F & p1, const D2D1_POINT_2F & p2, const float cut)
+{
+	return Construct(p1, p2, cut, cut);
+}
+
+void Arrow::Draw() const
+{
+	//app.m_pRenderTarget->BeginDraw();
+	app.m_pRenderTarget->DrawGeometry(pPathGeo, app.m_pBlackBrush, 2.f);
+	//auto hr = app.m_pRenderTarget->EndDraw();
+	//return hr;
+}
+
+HRESULT Arrow::Construct(const D2D1_POINT_2F & p1, const D2D1_POINT_2F & p2, const float cut_1, const float cut_2)
+{
 	ID2D1GeometrySink *pSink = nullptr;
 	auto hr = app.m_pD2DFactory->CreatePathGeometry(&pPathGeo);
 	if (SUCCEEDED(hr))
@@ -113,8 +132,9 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 		hr = pPathGeo->Open(&pSink);
 		if (SUCCEEDED(hr))
 		{
-			auto x1 = c1.info()[0], y1 = c1.info()[1], r1 = c1.info()[2];
-			auto x2 = c2.info()[0], y2 = c2.info()[1], r2 = c2.info()[2];
+			auto x1 = p1.x, y1 = p1.y, r1 = cut_1;
+			auto x2 = p2.x, y2 = p2.y, r2 = cut_2;
+			float length = std::sqrt((x1 - x2)*(x1 - x2) + (y1 - y2)*(y1 - y2)) - cut_1 - cut_2;
 			float x3, x4, y3, y4, x5, y5;
 			if (x1 != x2)
 			{
@@ -124,15 +144,15 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 				y3 = flag * k*(r1 / std::sqrt(1 + k*k)) + y1;
 				x4 = x2 - (r2 / std::sqrt(1 + k*k)) * flag;
 				y4 = y2 - flag * k*(r2 / std::sqrt(1 + k*k));
-				x5 = x4 - 7 * flag;
+				x5 = ((length - 10)*x4 + 10 * x3) / length;
 				y5 = k*(x5 - x1) + y1;
 			}
 			else
 			{
 				x5 = x3 = x4 = x1;
-				y3 = y1 + (y1 < y2 ? r1 : -r1); 
+				y3 = y1 + (y1 < y2 ? r1 : -r1);
 				y4 = y2 + (y1 < y2 ? -r2 : r2);
-				y5 = y4 - (y1 < y2 ? 7 : -7);
+				y5 = y4 - (y1 < y2 ? 10 : -10);
 			}
 			pSink->BeginFigure(
 				D2D1::Point2F(x4, y4),
@@ -141,8 +161,8 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 #define angle(x) x*3.14159265f/180
 			pSink->AddLine(D2D1::Point2F(x3, y3));
 			pSink->EndFigure(D2D1_FIGURE_END_OPEN);
-			x1 = std::cos(angle(30))*(x5-x4) - std::sin(angle(30))*(y5-y4) + x4;
-			y1 = std::sin(angle(30))*(x5-x4) + std::cos(angle(30))*(y5-y4) + y4;
+			x1 = std::cos(angle(30))*(x5 - x4) - std::sin(angle(30))*(y5 - y4) + x4;
+			y1 = std::sin(angle(30))*(x5 - x4) + std::cos(angle(30))*(y5 - y4) + y4;
 			//simulate matrix transform
 			pSink->BeginFigure(
 				D2D1::Point2F(x4, y4),
@@ -154,8 +174,8 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 				D2D1::Point2F(x4, y4),
 				D2D1_FIGURE_BEGIN_HOLLOW
 			);
-			x1 = std::cos(angle(-30))*(x5-x4) - std::sin(angle(-30))*(y5-y4) + x4;
-			y1 = std::sin(angle(-30))*(x5-x4) + std::cos(angle(-30))*(y5-y4) + y4;
+			x1 = std::cos(angle(-30))*(x5 - x4) - std::sin(angle(-30))*(y5 - y4) + x4;
+			y1 = std::sin(angle(-30))*(x5 - x4) + std::cos(angle(-30))*(y5 - y4) + y4;
 			//simulate matrix transform
 			pSink->AddLine(D2D1::Point2F(x1, y1));
 			pSink->EndFigure(D2D1_FIGURE_END_OPEN);
@@ -165,14 +185,6 @@ HRESULT Arrow::CreateArrow(const Circle & c1, const Circle & c2)
 		SAFE_RELEASE(pSink);
 	}
 	return hr;
-}
-
-void Arrow::Draw() const
-{
-	//app.m_pRenderTarget->BeginDraw();
-	app.m_pRenderTarget->DrawGeometry(pPathGeo, app.m_pBlackBrush, 2.f);
-	//auto hr = app.m_pRenderTarget->EndDraw();
-	//return hr;
 }
 
 Cell::Cell(const Cell & c)

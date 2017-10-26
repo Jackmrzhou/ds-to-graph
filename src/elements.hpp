@@ -56,10 +56,14 @@ public:
 	HRESULT CreateArrow(const Circle *c1, const Circle *c2) {
 		return CreateArrow(*c1, *c2);
 	}
+	HRESULT CreateArrow(const D2D1_POINT_2F &p1, const D2D1_POINT_2F &p2, const float cut);
 	void Draw() const;
 private:
 	VisualDSApp &app;
 	ID2D1PathGeometry *pPathGeo;
+
+private:
+	HRESULT Construct(const D2D1_POINT_2F &p1, const D2D1_POINT_2F &p2, const float cut_1, const float cut_2);
 };
 
 class Cell
