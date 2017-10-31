@@ -20,6 +20,7 @@ class ArrayType;
 #include "ArrayType.hpp"
 #include "StackType.hpp"
 #include "ListType.hpp"
+#include "RBTree.hpp"
 
 class VisualDSApp
 {
@@ -75,6 +76,13 @@ public:
 		auto s = new BinaryTreeType<T>(*this, pHead);
 		ObjList.push_back(s);
 		return unique_ptr<BinaryTreeType<T>>(s);
+	}
+
+	template<typename T>
+	unique_ptr<RBTree<T>> NewRBTree(T *pHead) {
+		auto s = new RBTree<T>(*this, pHead);
+		ObjList.push_back(s);
+		return unique_ptr<RBTree<T>>(s);
 	}
 
 	void OnRender();

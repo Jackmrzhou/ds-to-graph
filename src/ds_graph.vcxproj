@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\tests\DS_tests.cpp" />
     <ClCompile Include="..\tests\main.cpp" />
+    <ClCompile Include="..\tests\RBtest.cpp" />
     <ClCompile Include="..\tests\TestElements.cpp" />
     <ClCompile Include="App.cpp" />
     <ClCompile Include="ArrayType.hpp" />
@@ -37,6 +38,7 @@
     <ClInclude Include="defines.hpp" />
     <ClInclude Include="elements.hpp" />
     <ClInclude Include="init.hpp" />
+    <ClInclude Include="RBTree.hpp" />
     <ClInclude Include="StackType.hpp" />
     <ClInclude Include="Text.hpp" />
   </ItemGroup>

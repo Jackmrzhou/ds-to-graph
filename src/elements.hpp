@@ -27,7 +27,10 @@ public:
 	{
 		app.m_pRenderTarget->CreateSolidColorBrush(color, &pBrush);
 		CreatCircleGeo(pPathGeo);
-		pText = app.NewText(pValue.get());
+		if (color.g == 0.f && color.b==0.f && color.r ==0.f)
+			pText = app.NewText(pValue.get(), WHITE);
+		else 
+			pText = app.NewText(pValue.get());
 	}
 	~Circle();
 	void Draw() const;

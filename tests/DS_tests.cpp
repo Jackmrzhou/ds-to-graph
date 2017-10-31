@@ -1,3 +1,4 @@
+#include <stdlib.h>
 /*
 void testArray()
 {
@@ -47,6 +48,7 @@ public:
 	Node() :next(nullptr), prev(nullptr) {}
 	T data;
 	Node* next, *prev;
+	int color = 1;
 };
 
 template<typename T>
@@ -79,6 +81,7 @@ public:
 	TreeNode(T k) :key(k),left(nullptr), right(nullptr) {}
 	T key;
 	TreeNode *left, *right;
+	int color = rand()%2;
 };
 
 template<typename T>

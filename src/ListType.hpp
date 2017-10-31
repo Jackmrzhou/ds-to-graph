@@ -55,7 +55,7 @@ public:
 		//constructList();
 	}
 	//ListType(N<T>* H) :Head(H) {}
-	void constructList(T *value, N<T>** Next, N<T>** Prev);
+	virtual void constructList(T *value, N<T>** Next, N<T>** Prev);
 	virtual void Draw() const;
 	
 private:
@@ -97,7 +97,12 @@ protected:
 	void BuildTree(N<T>* T, D2D1_POINT_2F &p, int depth);
 	void ComputeHeight(N<T> *T, int depth);
 
-private:
+	virtual int access_color(N<T>* T) {
+		return 1;
+		//means always red.
+	}
+
+protected:
 	using ListType<N<T>>::access_data;
 	const int MaxHeight = 6;
 	float startX, startY;
@@ -257,12 +262,17 @@ inline void BinaryTreeType<N<T>>::BuildTree(N<T>* T, D2D1_POINT_2F & p, int dept
 {
 	if (T != nullptr && depth < MaxHeight)
 	{
+		decltype(RED) color;
+		if (access_color(T) == 1)
+			color = RED;
+		else color = BLACK;
+		//Yes, here is a bug. :)
 		auto NowCircle = app.NewCircle(
 			p.x,
 			p.y,
 			Node_Radius,
 			access_data(T),
-			RED
+			color
 		);
 		nodes.push_back(std::move(unique_ptr<Circle>(NowCircle)));
 	
