@@ -3,12 +3,10 @@
 ## Features
 
 - [x] Convert Array into Graph.
-
 - [x] Convert Stack(Array Implementaion) into Graph.
-
 - [x] Convert Double Linked List into Graph.
-
 - [x] Convert Binary Tree into Graph.
+- [x] Convert Red Black Tree into Graph.
 
 
 ## Usage
@@ -53,6 +51,9 @@ int main()
 	auto pT = app.NewTree(head);
 	pT->constructTree(&head->key, &head->left, &head->right);
   	//similar to double linked-list type.
+  	auto pT = app.NewRBTree(head);
+  	pT->constructTree(&head->key, &head->left, &head->right, &head->color);
+  	//the color type must be bool or int.
     return 0;
 }
 ```
@@ -67,3 +68,5 @@ int main()
 ![Binary Tree](https://github.com/Jackmrzhou/ds-to-graph/blob/master/s1.png?raw=true)
 
 ![Double Linked List](https://github.com/Jackmrzhou/ds-to-graph/blob/master/s2.png?raw=true)
+
+![Red Black Tree](https://github.com/Jackmrzhou/ds-to-graph/blob/master/s3.png?raw=true)
